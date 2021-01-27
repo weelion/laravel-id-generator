@@ -81,7 +81,8 @@ class IdGenerator
             if ($resetOnPrefixChange) {
                 $maxQuery = sprintf("SELECT MAX(%s) maxId from %s WHERE %s like %s", $field, $table, $field, "'" . $prefix . "%'");
             } else {
-                $maxQuery = sprintf("SELECT MAX(%s) maxId from %s", $field, $table);
+                $max = $configArr['prefix'] .  str_repeat(9, $idLength);
+                $maxQuery = sprintf("SELECT MAX(%s) maxId from %s where id < %d", $field, $table, $max);
             }
 
             $queryResult = DB::select($maxQuery);
